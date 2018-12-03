@@ -20,11 +20,35 @@ namespace Day1
             }
 
             Console.WriteLine("Frequency result: {0}", CalibrateFrequency(frequencyChanges));
+            Console.WriteLine("First duplicate frequency: {0}", CalibrateDuplicateFrequency(frequencyChanges));
         }
 
         internal static int CalibrateFrequency(List<int> frequencyChanges)
         {
             return frequencyChanges.Aggregate(0, (current, frequency) => current + frequency);
+        }
+
+        internal static int CalibrateDuplicateFrequency(List<int> frequencyChanges)
+        {
+            var frequencyHash = new HashSet<int>();
+            var currentFrequency = 0;
+            var duplicateFound = false;
+
+            do
+            {
+                foreach (var frequency in frequencyChanges)
+                {
+                    currentFrequency += frequency;
+
+                    if (!frequencyHash.Add(currentFrequency))
+                    {
+                        duplicateFound = true;
+                        break;
+                    }
+                }
+            } while (!duplicateFound);
+
+            return currentFrequency;
         }
     }
 }
